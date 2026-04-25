@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blocktine Bénin — L'épargne collective sécurisée</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --vert:#1B5E20;--vert-mid:#2E7D32;--vert-vif:#388E3C;--vert-clair:#E8F5E9;
+  --or:#FFD400;--or-vif:#FFEB3B;--or-clair:#FFFDE7;
+  --rouge:#B71C1C;--rouge-vif:#C62828;
+  --noir:#080C08;
+  --vert-sombre:#0A1F0A;
+  --blanc:#FAF9F4;--blanc-2:#F3F2ED;
+  --text:#141414;--text-soft:#666;
+  --border:rgba(255,212,0,0.12);
+  --border-vert:rgba(27,94,32,0.15);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--noir);color:#fff;overflow-x:hidden;font-size:18px;line-height:1.7}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--noir)}
+::-webkit-scrollbar-thumb{background:var(--or);border-radius:2px}
+
+/* ══ GRAIN TEXTURE ══ */
+.grain::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  opacity:.45;z-index:1;
+}
+
+/* ══ KITA DIVIDER ══ */
+.kita-divider{
+  width:100%;height:14px;
+  background:repeating-linear-gradient(90deg,
+    var(--vert) 0,var(--vert) 8px,
+    var(--or) 8px,var(--or) 16px,
+    var(--rouge) 16px,var(--rouge) 24px,
+    var(--vert) 24px,var(--vert) 32px);
+  opacity:.25;
+}
+
+/* ══ NAV ══ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.875rem 5vw;
+  background:rgba(8,12,8,.93);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo img{height:36px;width:36px;border-radius:50%;object-fit:cover}
+.nav-brand{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.04em;color:#fff;line-height:1}
+.nav-brand span{color:var(--or)}
+.nav-links{display:flex;gap:1.75rem;list-style:none}
+.nav-links a{text-decoration:none;font-size:.82rem;font-weight:500;color:rgba(255,255,255,.45);transition:color .2s}
+.nav-links a:hover{color:var(--or)}
+.nav-cta{background:var(--or)!important;color:#080C08!important;padding:.42rem 1.2rem;border-radius:999px;font-weight:500!important;transition:all .2s!important}
+.nav-cta:hover{background:var(--or-vif)!important;transform:translateY(-1px)}
+@media(max-width:768px){.nav-links{display:none}}
+
+/* ══════════════════════════════════════
+   HERO — DARK CINEMATIC
+══════════════════════════════════════ */
+#hero{
+  min-height:100vh;
+  background:var(--noir);
+  display:flex;align-items:center;
+  padding:8rem 5vw 5rem;
+  position:relative;overflow:hidden;
+}
+#hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    repeating-linear-gradient(45deg,rgba(249,168,37,.04) 0,rgba(249,168,37,.04) 1.5px,transparent 1.5px,transparent 20px),
+    repeating-linear-gradient(-45deg,rgba(27,94,32,.04) 0,rgba(27,94,32,.04) 1.5px,transparent 1.5px,transparent 20px);
+  z-index:0;
+}
+
+/* Cauri filigree */
+.cauri-bg{
+  position:absolute;right:-6vw;top:50%;
+  transform:translateY(-50%);
+  width:min(68vw,640px);height:min(68vw,640px);
+  z-index:1;opacity:.07;
+  animation:cauriBreath 7s ease-in-out infinite;
+}
+@keyframes cauriBreath{
+  0%,100%{opacity:.07;transform:translateY(-50%) scale(1)}
+  50%{opacity:.11;transform:translateY(-50%) scale(1.025)}
+}
+
+/* ── RADIAL ANIMATION STAGE ── */
+.anim-stage{
+  position:absolute;right:4vw;top:50%;
+  transform:translateY(-50%);
+  width:min(48vw,500px);height:min(48vw,500px);
+  z-index:2;
+}
+
+/* Decorative rings */
+.anim-ring{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  border:1px solid rgba(249,168,37,.1);
+}
+.anim-ring-1{width:92%;height:92%;}
+.anim-ring-2{width:70%;height:70%;border-style:dashed;border-color:rgba(27,94,32,.15);}
+.anim-ring-3{width:45%;height:45%;border-color:rgba(249,168,37,.08);}
+
+/* SVG canvas for the animation */
+#animSVG{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  overflow:visible;
+}
+
+/* Center hands logo */
+.hands-logo{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%) scale(0);
+  width:100px;height:100px;
+  z-index:5;
+  opacity:0;
+  transition:all .9s cubic-bezier(.34,1.56,.64,1);
+}
+.hands-logo.show{transform:translate(-50%,-50%) scale(1);opacity:1;}
+
+/* Tech nodes */
+.tech-node{
+  filter: drop-shadow(0 0 8px var(--or));
+  transition: all 0.3s ease;
+}
+.tech-node:hover{
+  filter: drop-shadow(0 0 15px var(--or-vif));
+}
+
+/* Glow burst improved */
+.glow-burst{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%) scale(0);
+  width:220px;height:220px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(249,168,37,.6) 0%,rgba(249,168,37,.2) 45%,transparent 70%);
+  opacity:0;z-index:4;
+  transition:all .8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glow-burst.show{transform:translate(-50%,-50%) scale(1.2);opacity:1;animation:glowPulse 3s ease-in-out infinite;}
+@keyframes glowPulse{0%,100%{transform:translate(-50%,-50%) scale(1.15);opacity:0.8}50%{transform:translate(-50%,-50%) scale(1.3);opacity:1}}
+
+/* Hero text */
+.hero-content{position:relative;z-index:5;max-width:540px;}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(249,168,37,.1);border:1px solid rgba(249,168,37,.25);
+  color:rgba(249,168,37,.85);padding:.3rem .875rem;border-radius:999px;
+  font-size:.75rem;font-weight:500;margin-bottom:1.25rem;
+  animation:fadeUp .6s ease both;
+}
+.hero-badge::before{content:'◆';font-size:.5rem}
+.hero-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3.5rem,8vw,7rem);
+  letter-spacing:.02em;line-height:.9;
+  color:#fff;margin-bottom:.5rem;
+  animation:fadeUp .6s .1s ease both;
+}
+.hero-title .accent{color:var(--or);display:block;text-shadow:0 0 50px rgba(249,168,37,.25);}
+.hero-fon{
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:clamp(.95rem,1.8vw,1.15rem);color:var(--or);
+  display:block;padding:.55rem 1rem;
+  border-left:3px solid var(--or);
+  background:rgba(249,168,37,.06);border-radius:0 8px 8px 0;
+  margin:1.25rem 0 1.5rem;
+  animation:fadeUp .6s .2s ease both;
+}
+.hero-desc{
+  font-size:.975rem;line-height:1.8;color:rgba(255,255,255,.5);
+  margin-bottom:2rem;animation:fadeUp .6s .3s ease both;
+}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;animation:fadeUp .6s .4s ease both;}
+.btn-primary{
+  background:var(--or);color:#080C08;padding:.8rem 1.875rem;border-radius:999px;
+  text-decoration:none;font-weight:500;font-size:.9rem;border:none;cursor:pointer;
+  display:inline-flex;align-items:center;gap:6px;transition:all .25s;
+}
+.btn-primary:hover{background:var(--or-vif);transform:translateY(-2px);box-shadow:0 8px 28px rgba(249,168,37,.3);}
+.btn-secondary{
+  background:transparent;color:rgba(255,255,255,.6);padding:.8rem 1.875rem;
+  border-radius:999px;text-decoration:none;font-weight:500;font-size:.9rem;
+  border:1.5px solid rgba(255,255,255,.18);transition:all .25s;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.btn-secondary:hover{border-color:var(--or);color:var(--or);}
+.hero-stats{
+  display:flex;gap:2rem;margin-top:2.5rem;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,.07);
+  animation:fadeUp .6s .5s ease both;
+}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:.03em;color:var(--or);display:block;}
+.stat-label{font-size:.72rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.06em;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══════════════════════════════════════
+   SECTION COMMONS
+══════════════════════════════════════ */
+section{padding:6rem 5vw;position:relative;}
+.section-tag{font-size:.9rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--or);display:block;margin-bottom:.875rem;}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.4rem,5vw,4.2rem);letter-spacing:.02em;line-height:.95;margin-bottom:.75rem;}
+.fon-block{
+  display:block;text-align:center;
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:1.1rem;color:var(--or);
+  margin:0 auto 2.5rem;padding:.65rem 1.5rem;
+  background:rgba(249,168,37,.08);border-radius:8px;max-width:640px;
+}
+.fon-block::before,.fon-block::after{content:'✦';color:rgba(249,168,37,.35);margin:0 .5rem;font-size:.65rem;}
+
+/* ══════════════════════════════════════
+   PROBLÈME — DARK RED DRAMA
+══════════════════════════════════════ */
+#probleme{
+  background:var(--noir);
+  overflow:hidden;
+}
+#probleme::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 80% 50%,rgba(183,28,28,.06) 0%,transparent 65%);
+  pointer-events:none;
+}
+
+/* Coin drop */
+.coin-scene{width:100%;height:110px;position:relative;margin-bottom:2rem;overflow:hidden;}
+.coin{
+  position:absolute;left:50%;top:-80px;
+  transform:translateX(-50%);font-size:3.2rem;
+  animation:coinFall 2s cubic-bezier(.25,.46,.45,.94) forwards;
+  animation-play-state:paused;
+}
+@keyframes coinFall{
+  0%{top:-80px;transform:translateX(-50%) rotate(0deg);opacity:1}
+  55%{top:38px;transform:translateX(-50%) rotate(680deg);opacity:1}
+  65%{top:20px;transform:translateX(-50%) rotate(665deg);opacity:1}
+  75%{top:42px;transform:translateX(-50%) rotate(680deg);opacity:1}
+  88%{top:38px;transform:translateX(-50%) rotate(675deg) scale(.85);opacity:1}
+  100%{top:42px;transform:translateX(-50%) rotate(678deg) scale(0);opacity:0}
+}
+.coin-frags{position:absolute;left:50%;top:42px;display:none;}
+.frag{position:absolute;width:9px;height:9px;border-radius:50%;animation:fragFly .9s ease forwards;}
+@keyframes fragFly{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:var(--tx) scale(0);opacity:0}}
+.frag:nth-child(1){--tx:translate(-65px,-45px)}
+.frag:nth-child(2){--tx:translate(65px,-45px)}
+.frag:nth-child(3){--tx:translate(-85px,15px)}
+.frag:nth-child(4){--tx:translate(85px,15px)}
+.frag:nth-child(5){--tx:translate(-18px,-65px)}
+.frag:nth-child(6){--tx:translate(18px,-65px)}
+.frag:nth-child(7){--tx:translate(0,55px)}
+.frag:nth-child(8){--tx:translate(-45px,40px)}
+
+.prob-grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:start;}
+.prob-header{text-align:left; max-width:800px;}
+.prob-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5px;background:var(--border);border:0.5px solid var(--border);margin-top:2rem;}
+@media(max-width:850px){.prob-cards{grid-template-columns:1fr;}}
+
+.prob-card-item{
+  background:var(--noir);
+  padding:3rem 2.5rem;
+  transition:background 0.3s;
+  position:relative;
+}
+.prob-card-item:hover{
+  background:var(--vert-sombre);
+}
+.prob-card-item::before{
+  content:'';position:absolute;top:0;left:0;width:3px;height:100%;
+  background:var(--or);opacity:0;transition:opacity 0.3s;
+}
+.prob-card-item:hover::before{opacity:1;}
+
+.prob-type{font-size:.8rem;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--or);margin-bottom:1rem;display:block;}
+.prob-card-title{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:#fff;margin-bottom:1rem;line-height:1;}
+.prob-card-desc{font-size:1.05rem;color:rgba(255,255,255,.5);line-height:1.7;}
+
+.prob-visual{
+  background:rgba(255,212,0,0.03);border:1px solid var(--border);
+  border-radius:24px;padding:4rem;position:relative;
+  display:flex;flex-direction:row;align-items:center;
+  text-align:left;gap:3rem;
+}
+@media(max-width:900px){.prob-visual{flex-direction:column; text-align:center;}}
+.big-stat{font-family:'Bebas Neue',sans-serif;font-size:10rem;line-height:1;color:var(--or);display:block;text-shadow:0 0 70px rgba(255,212,0,.2);}
+.big-stat-label{font-size:1.2rem;color:rgba(255,255,255,.5);max-width:350px;line-height:1.6;}
+.prob-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;width:100%;max-width:900px;}
+@media(max-width:768px){.prob-stats-grid{grid-template-columns:repeat(2,1fr);}}
+.data-row{display:flex;flex-direction:column;gap:.5rem;padding:1rem 0;align-items:flex-start;text-align:left;}
+.data-label{font-size:.7rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.05em;}
+.data-bar-wrap{width:100%;height:3px;background:rgba(255,255,255,0.05);border-radius:999px;overflow:hidden;}
+.data-bar{height:100%;border-radius:999px;background:var(--or);width:0;transition:width 1.2s ease;}
+.data-bar.or{background:var(--or);}
+.data-bar.rouge{background:var(--or);}
+.data-pct{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:var(--or);}
+
+
+/* ══════════════════════════════════════
+   TÉMOIGNAGES — VERT SOMBRE
+══════════════════════════════════════ */
+#temoignages{
+  background:var(--vert-sombre);
+  position:relative;overflow:hidden;
+}
+#temoignages::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    repeating-linear-gradient(45deg,rgba(255,255,255,.025) 0,rgba(255,255,255,.025) 1.5px,transparent 1.5px,transparent 18px),
+    repeating-linear-gradient(-45deg,rgba(249,168,37,.04) 0,rgba(249,168,37,.04) 1.5px,transparent 1.5px,transparent 18px);
+}
+.temo-track-wrap{overflow:hidden;}
+.temo-track{display:flex;gap:1.25rem;transition:transform .55s cubic-bezier(.4,0,.2,1);}
+.temo-card{
+  flex:0 0 calc(100%/3 - .85rem);
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);
+  border-radius:20px;padding:1.875rem;
+}
+@media(max-width:900px){.temo-card{flex:0 0 100%;}}
+.temo-avatar{width:50px;height:50px;border-radius:50%;background:var(--or);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:#080C08;margin-bottom:1rem;}
+.temo-status{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;color:rgba(255,255,255,.38);margin-bottom:.875rem;}
+.sdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.sdot.rouge{background:var(--rouge);}
+.sdot.vert{background:#66BB6A;}
+.temo-quote{font-style:italic;font-size:1.05rem;line-height:1.7;color:rgba(255,255,255,.82);margin-bottom:.875rem;}
+.temo-fon{font-family:'Playfair Display',serif;font-style:italic;font-size:.85rem;color:var(--or);padding-top:.6rem;border-top:1px solid rgba(249,168,37,.18);margin-bottom:.875rem;line-height:1.6;}
+.temo-name{font-weight:500;font-size:.875rem;color:#fff;}
+.temo-loc{font-size:.75rem;color:rgba(255,255,255,.35);}
+.slider-dots{display:flex;gap:.5rem;justify-content:center;margin-top:1.75rem;}
+.sdot-btn{width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.18);border:none;cursor:pointer;padding:0;transition:all .25s;}
+.sdot-btn.active{background:var(--or);width:24px;}
+#solution{background:var(--blanc);color:var(--text);}
+#solution .section-title{color:var(--vert);}
+#solution .section-tag{color:var(--or);}
+.sol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;align-items:start;}
+@media(max-width:900px){.sol-grid{grid-template-columns:1fr;}}
+.sol-card{
+  background:#fff;border:1px solid var(--border-vert);
+  border-radius:20px;padding:1.875rem;
+  position:relative;overflow:hidden;transition:all .3s;cursor:pointer;
+  color:var(--text);
+}
+.sol-card::after{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--vert);transform:scaleX(0);transform-origin:left;transition:transform .35s;}
+.sol-card:hover::after,.sol-card.open::after{transform:scaleX(1);}
+.sol-card:hover,.sol-card.open{transform:translateY(-5px);box-shadow:0 16px 40px rgba(27,94,32,.1);}
+.sol-icon{width:50px;height:50px;background:var(--vert-clair);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1.25rem;}
+.sol-num{font-family:'Bebas Neue',sans-serif;font-size:3rem;color:rgba(27,94,32,.07);position:absolute;top:1.25rem;right:1.5rem;line-height:1;}
+.sol-title{font-weight:500;font-size:1rem;color:var(--vert);margin-bottom:.4rem;}
+.sol-short{font-size:.875rem;color:var(--text-soft);line-height:1.6;margin-bottom:.75rem;}
+.sol-trigger{display:inline-flex;align-items:center;gap:5px;font-size:.78rem;color:var(--vert);font-weight:500;cursor:pointer;border:none;background:none;padding:0;transition:gap .2s;}
+.sol-arrow{display:inline-block;transition:transform .3s;font-size:.8rem;}
+.sol-card.open .sol-arrow{transform:rotate(180deg);}
+.sol-body{max-height:0;overflow:hidden;transition:max-height .4s ease,margin .3s;font-size:.82rem;color:var(--text-soft);line-height:1.75;margin-top:0;}
+.sol-card.open .sol-body{max-height:200px;margin-top:.75rem;}
+
+/* ══════════════════════════════════════
+   PRINCIPE — OR CLAIR + KITA
+══════════════════════════════════════ */
+#principe{
+  background:var(--blanc);color:var(--text);
+  background-image:
+    repeating-linear-gradient(45deg,rgba(249,168,37,.06) 0,rgba(249,168,37,.06) 1.5px,transparent 1.5px,transparent 14px),
+    repeating-linear-gradient(-45deg,rgba(27,94,32,.06) 0,rgba(27,94,32,.06) 1.5px,transparent 14px);
+}
+#principe .section-title{color:var(--vert);}
+#principe .section-tag{color:var(--or);}
+.timeline-wrapper{display:grid;grid-template-columns:300px 1fr;gap:5rem;margin-top:4rem;align-items:start;}
+@media(max-width:900px){.timeline-wrapper{grid-template-columns:1fr;gap:3rem;}}
+.timeline-sidebar{position:sticky;top:100px;}
+@media(max-width:900px){.timeline-sidebar{position:static;}}
+.timeline-sidebar h3{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.02em;margin-bottom:0.75rem;color:var(--vert);}
+.timeline-sidebar p{font-size:0.9rem;color:var(--text);line-height:1.7;}
+.data-chip{display:flex;flex-direction:column;margin-top:2rem;border:1px solid rgba(27,94,32,.1);padding:1.5rem;background:rgba(27,94,32,.03);border-radius:12px;}
+.data-chip .chip-val{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;font-weight:800;color:var(--vert);letter-spacing:-0.02em;line-height:1;}
+.data-chip .chip-label{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-soft);margin-top:0.5rem;}
+
+.timeline{position:relative;padding-left:3rem;border-left:1px solid rgba(27,94,32,.15);}
+.timeline-step{position:relative;margin-bottom:4rem;}
+.timeline-step:last-child{margin-bottom:0;}
+.step-dot{position:absolute;left:-3rem;top:0;width:20px;height:20px;margin-left:-10px;clip-path:polygon(50% 0%, 100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);background:var(--or);transition:transform 0.3s;}
+.timeline-step:hover .step-dot{transform:scale(1.4) rotate(30deg);}
+.step-num{font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);margin-bottom:0.75rem;font-weight:600;}
+.step-title{font-family:'Bebas Neue',sans-serif;font-size:1.75rem;letter-spacing:0.02em;margin-bottom:0.75rem;color:var(--vert);}
+.step-body{font-size:1rem;color:var(--text);line-height:1.8;max-width:550px;}
+.step-badge{display:inline-flex;align-items:center;gap:0.5rem;margin-top:1rem;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--vert);border:1px solid rgba(27,94,32,.3);padding:0.4rem 0.8rem;border-radius:4px;background:rgba(27,94,32,.05);font-weight:600;}
+
+/* ══════════════════════════════
+   SIMULATION — CALCULATEUR
+══════════════════════════════ */
+#simulation{background:var(--noir);padding:10rem 5vw;}
+#simulation .section-title{color:#fff;text-align:center;margin-bottom:4.5rem;}
+.sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;max-width:1200px;margin:0 auto;align-items:start;}
+@media(max-width:850px){.sim-grid{grid-template-columns:1fr;gap:3rem;}}
+
+.sim-panel{
+  background:rgba(255,255,255,.03);border:1px solid var(--border);
+  border-radius:32px;padding:3.5rem;backdrop-filter:blur(10px);
+}
+.sim-field{margin-bottom:2rem;}
+.sim-label{display:flex;justify-content:space-between;font-family:'Bebas Neue',sans-serif;font-size:1.15rem;color:rgba(255,255,255,.5);margin-bottom:.75rem;letter-spacing:.05em;}
+.sim-label span:last-child{color:var(--or);}
+input[type="range"]{width:100%;height:6px;background:rgba(255,255,255,.1);border-radius:999px;appearance:none;outline:none;cursor:pointer;}
+input[type="range"]::-webkit-slider-thumb{appearance:none;width:22px;height:22px;background:var(--or);border-radius:50%;cursor:pointer;transition:transform .2s;box-shadow:0 0 15px rgba(255,212,0,.3);}
+input[type="range"]:hover::-webkit-slider-thumb{transform:scale(1.2);}
+select{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;color:#fff;padding:1rem;font-family:'DM Sans',sans-serif;outline:none;cursor:pointer;font-size:0.95rem;}
+
+.sim-results{display:flex;flex-direction:column;gap:1.5rem;}
+.res-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:24px;padding:2rem;transition:all .3s;}
+.res-card.gold{border-color:var(--or);background:linear-gradient(135deg,rgba(255,212,0,.08),transparent);}
+.res-lbl{font-size:.85rem;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.4);margin-bottom:.5rem;}
+.res-val{font-family:'Bebas Neue',sans-serif;font-size:3.2rem;color:#fff;line-height:1;letter-spacing:.02em;}
+.res-val.accent{color:var(--or);}
+.res-val.vert{color:#66BB6A;}
+.res-sub{font-size:.9rem;color:rgba(255,255,255,.3);margin-top:.5rem;}
+
+.sim-cta-wrap{margin-top:2.5rem;text-align:center;}
+.sim-cta-wrap .btn-primary{padding:1.25rem 2.5rem;font-size:1rem;border-radius:12px;box-shadow:0 10px 30px rgba(255,212,0,.15);}
+
+#confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;display:none;}
+
+.sim-console{
+  margin-top:3rem;background:#050805;border:1px solid rgba(27,94,32,.3);
+  border-radius:16px;padding:1.5rem;font-family:monospace;font-size:0.85rem;
+  color:#66BB6A;text-align:left;height:220px;overflow-y:auto;
+  box-shadow:inset 0 0 20px rgba(0,0,0,.5);display:none;
+}
+.console-header{
+  display:flex;gap:6px;margin-bottom:1rem;border-bottom:1px solid rgba(27,94,32,.1);padding-bottom:0.5rem;
+}
+.console-dot{width:8px;height:8px;border-radius:50%;}
+.console-line{margin-bottom:0.4rem;line-height:1.4;opacity:0;transform:translateY(5px);transition:all 0.3s;}
+.console-line.visible{opacity:1;transform:translateY(0);}
+.console-line.cmd{color:var(--or);}
+.console-line.success{color:#fff;font-weight:bold;}
+
+/* ══════════════════════════════════════
+   IMPACT — NOIR DOUX
+══════════════════════════════════════ */
+#impact{background:var(--vert-sombre);}
+#impact .section-title{color:#fff;text-align:center;}
+.impact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;margin-bottom:3rem;}
+@media(max-width:900px){.impact-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:480px){.impact-grid{grid-template-columns:1fr;}}
+.impact-card{
+  background:rgba(255,255,255,.03);border:1px solid rgba(249,168,37,.1);
+  border-radius:18px;padding:1.5rem;text-align:center;transition:all .25s;
+}
+.impact-card:hover{background:rgba(249,168,37,.06);border-color:rgba(249,168,37,.2);transform:translateY(-3px);}
+.impact-icon{font-size:1.75rem;margin-bottom:.6rem;display:block;}
+.impact-num{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;color:var(--or);letter-spacing:.03em;display:block;}
+.impact-lbl{font-size:.78rem;color:rgba(255,255,255,.4);margin-top:.2rem;line-height:1.5;}
+.odd-strip{background:rgba(27,94,32,.2);border:1px solid rgba(27,94,32,.3);border-radius:20px;padding:2.25rem;max-width:700px;margin:0 auto;text-align:center;}
+.odd-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:#fff;margin-bottom:1rem;}
+.odd-tags{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center;}
+.odd-tag{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:.35rem .875rem;font-size:.78rem;color:rgba(255,255,255,.65);font-weight:500;}
+
+/* ══════════════════════════════════════
+   CTA — NOIR PROFOND
+══════════════════════════════════════ */
+#cta{
+  background:var(--noir);text-align:center;position:relative;overflow:hidden;
+}
+#cta::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(249,168,37,.06) 0%,transparent 60%);
+}
+#cta::after{
+  content:'';position:absolute;inset:0;
+  background-image:repeating-linear-gradient(45deg,rgba(249,168,37,.03) 0,rgba(249,168,37,.03) 1.5px,transparent 1.5px,transparent 22px);
+}
+.cta-inner{position:relative;z-index:2;}
+.cta-fon-big{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.1rem,2.5vw,1.6rem);color:var(--or);display:block;margin-bottom:.75rem;}
+.cta-divider{display:flex;align-items:center;gap:.75rem;justify-content:center;margin-bottom:1.25rem;}
+.cta-line{width:60px;height:1px;background:rgba(249,168,37,.22);}
+.cta-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.cta-desc{font-size:1rem;color:rgba(255,255,255,.45);max-width:520px;margin:0 auto 2rem;line-height:1.8;}
+#cta .btn-secondary{border-color:rgba(255,255,255,.18);color:rgba(255,255,255,.55);}
+#cta .btn-secondary:hover{border-color:var(--or);color:var(--or);}
+
+/* Footer */
+footer{background:#030703;color:rgba(255,255,255,.3);padding:1.875rem 5vw;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;font-size:.75rem;}
+.foot-brand{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;color:#fff;letter-spacing:.04em;}
+.foot-brand span{color:var(--or);}
+.foot-links{display:flex;gap:1.5rem;}
+.foot-links a{color:rgba(255,255,255,.28);text-decoration:none;transition:color .2s;}
+.foot-links a:hover{color:var(--or);}
+
+/* Scroll reveal */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">
+    <img src="/mnt/user-data/uploads/Logo_de_TontineChain_pour_le_Bénin.png" alt="TC" onerror="this.style.display='none'">
+    <span class="nav-brand">Block<span>tine</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#probleme">Problème</a></li>
+    <li><a href="#solution">Solution</a></li>
+    <li><a href="#principe">Comment ça marche</a></li>
+    <li><a href="#simulation">Simulation</a></li>
+    <li><a href="#cta" class="nav-cta">Rejoindre</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <!-- Cauri bg -->
+  <svg class="cauri-bg" viewBox="0 0 500 500" fill="none">
+    <ellipse cx="250" cy="250" rx="220" ry="240" stroke="#F9A825" stroke-width="1.2"/>
+    <ellipse cx="250" cy="250" rx="180" ry="200" stroke="#F9A825" stroke-width=".8"/>
+    <ellipse cx="250" cy="250" rx="140" ry="155" stroke="#F9A825" stroke-width=".6" stroke-dasharray="6 4"/>
+    <path d="M250 125 Q275 250 250 375 Q225 250 250 125Z" stroke="#F9A825" stroke-width="1.2" fill="rgba(249,168,37,0.04)"/>
+    <path d="M178 200 Q250 255 322 200" stroke="#F9A825" stroke-width=".7" opacity=".6"/>
+    <path d="M172 225 Q250 285 328 225" stroke="#F9A825" stroke-width=".7" opacity=".5"/>
+    <path d="M175 252 Q250 315 325 252" stroke="#F9A825" stroke-width=".7" opacity=".45"/>
+    <path d="M178 278 Q250 338 322 278" stroke="#F9A825" stroke-width=".7" opacity=".35"/>
+    <path d="M184 302 Q250 358 316 302" stroke="#F9A825" stroke-width=".7" opacity=".25"/>
+    <circle cx="250" cy="250" r="242" stroke="#1B5E20" stroke-width=".6" stroke-dasharray="4 8" opacity=".35"/>
+    <ellipse cx="78" cy="95" rx="20" ry="26" stroke="#F9A825" stroke-width=".7" opacity=".4"/>
+    <path d="M78 75 Q82 95 78 121 Q74 95 78 75Z" stroke="#F9A825" stroke-width=".7" opacity=".4"/>
+    <ellipse cx="422" cy="385" rx="16" ry="22" stroke="#F9A825" stroke-width=".7" opacity=".35"/>
+    <ellipse cx="58" cy="355" rx="13" ry="17" stroke="#1B5E20" stroke-width=".7" opacity=".28"/>
+    <ellipse cx="442" cy="138" rx="15" ry="19" stroke="#1B5E20" stroke-width=".7" opacity=".25"/>
+  </svg>
+
+  <!-- Animation stage -->
+  <div class="anim-stage" id="animStage">
+    <div class="anim-ring anim-ring-1"></div>
+    <div class="anim-ring anim-ring-2"></div>
+    <div class="anim-ring anim-ring-3"></div>
+    <svg id="animSVG" viewBox="0 0 500 500">
+      <defs>
+        <clipPath id="circleClip">
+          <circle cx="0" cy="0" r="24" />
+        </clipPath>
+      </defs>
+    </svg>
+    <div class="glow-burst" id="glowBurst"></div>
+    <div class="hands-logo" id="handsLogo">
+      <svg viewBox="0 0 120 120" fill="none">
+        <defs>
+          <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="var(--or)" />
+            <stop offset="100%" stop-color="var(--or-vif)" />
+          </linearGradient>
+        </defs>
+        <!-- Outer hexagon -->
+        <path d="M60 10 L103 35 L103 85 L60 110 L17 85 L17 35 Z" stroke="url(#logoGrad)" stroke-width="2" fill="rgba(249,168,37,0.05)"/>
+        <!-- Inner cube structure -->
+        <path d="M60 10 L60 60 L103 35 M60 60 L17 35 M60 60 L60 110" stroke="url(#logoGrad)" stroke-width="1.5" opacity="0.6"/>
+        <path d="M103 85 L60 60 L17 85" stroke="url(#logoGrad)" stroke-width="1.5" opacity="0.6"/>
+        <!-- Nodes -->
+        <circle cx="60" cy="10" r="3" fill="var(--or)"/>
+        <circle cx="103" cy="35" r="3" fill="var(--or)"/>
+        <circle cx="103" cy="85" r="3" fill="var(--or)"/>
+        <circle cx="60" cy="110" r="3" fill="var(--or)"/>
+        <circle cx="17" cy="85" r="3" fill="var(--or)"/>
+        <circle cx="17" cy="35" r="3" fill="var(--or)"/>
+        <circle cx="60" cy="60" r="5" fill="var(--or)">
+          <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite" />
+        </circle>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="hero-content">
+    <h1 class="hero-title">L'épargne<br>collective,<span class="accent">enfin libre.</span></h1>
+    <span class="hero-fon">Ðò kplékplé mɛ ɔ, akwɛzinzan mǐtɔn lɛ ɖò ayijayǐ mɛ.</span>
+    <p class="hero-desc">Blocktine protège vos tontines grâce à la blockchain. Règles automatiques, caisse intouchable, chaque centime traçable en temps réel.</p>
+    <div class="hero-actions">
+      <a href="#simulation" class="btn-primary">Voir la simulation →</a>
+      <a href="#probleme" class="btn-secondary">Comprendre le problème</a>
+    </div>
+    <div class="hero-stats">
+      <div><span class="stat-num" id="c1">—</span><span class="stat-label">USD / an en tontines</span></div>
+      <div><span class="stat-num" id="c2">—</span><span class="stat-label">adultes béninois</span></div>
+      <div><span class="stat-num" id="c3">—</span><span class="stat-label">incidents évitables</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="kita-divider"></div>
+
+<!-- ══ PROBLÈME ══ -->
+<section id="probleme">
+  <div class="coin-scene" id="coinScene">
+    <div class="coin" id="coin">🪙</div>
+    <div class="coin-frags" id="frags">
+      <div class="frag"></div><div class="frag"></div><div class="frag"></div>
+      <div class="frag"></div><div class="frag"></div><div class="frag"></div>
+      <div class="frag"></div><div class="frag"></div>
+    </div>
+  </div>
+  
+  <div class="prob-grid">
+    <div class="prob-header reveal">
+      <span class="section-tag">Le constat</span>
+      <h2 class="section-title" style="color:#fff;">La tontine est vitale,<br>mais elle reste vulnérable.</h2>
+      <p style="font-size:1.2rem; line-height:1.8; color:rgba(255,255,255,.5); margin-bottom:1rem;">Chaque année au Bénin, plus de 400 millions de dollars circulent hors du système bancaire. Sans règles inviolables, ce moteur de l'économie locale est freiné par l'insécurité.</p>
+    </div>
+
+    <div class="prob-cards reveal">
+      <div class="prob-card-item">
+        <span class="prob-type">Risque Majeur</span>
+        <h3 class="prob-card-title">Disparition de la caisse</h3>
+        <p class="prob-card-desc">L'organisateur part avec la cagnotte ou l'argent est volé. Sans preuve numérique, aucun recours légal n'est possible pour les membres.</p>
+      </div>
+      <div class="prob-card-item">
+        <span class="prob-type">Conflit Social</span>
+        <h3 class="prob-card-title">Désaccord sur l'ordre</h3>
+        <p class="prob-card-desc">L'ordre de réception est contesté ou oublié au fil des mois. Cela brise des amitiés et dissout des groupes de solidarité entiers.</p>
+      </div>
+      <div class="prob-card-item">
+        <span class="prob-type">Injustice Financière</span>
+        <h3 class="prob-card-title">Abandons stratégiques</h3>
+        <p class="prob-card-desc">Certains membres encaissent leur part et cessent de cotiser pour les autres. Le groupe subit la perte sans aucun moyen de pression.</p>
+      </div>
+      <div class="prob-card-item">
+        <span class="prob-type">Exclusion</span>
+        <h3 class="prob-card-title">Manque de traçabilité</h3>
+        <p class="prob-card-desc">Sans historique de paiement fiable, il est impossible de démontrer son sérieux financier pour obtenir un crédit ou un prêt bancaire.</p>
+      </div>
+    </div>
+
+    <div class="prob-visual reveal" style="margin-top:4rem;">
+      <div>
+        <span class="big-stat" id="bigStat">400M</span>
+        <p class="big-stat-label">USD transitent par les tontines béninoises chaque année. C'est le cœur battant de notre économie de proximité.</p>
+      </div>
+      
+      <div class="prob-stats-grid">
+        <div class="data-row">
+          <span class="data-pct">65%</span>
+          <span class="data-label">Participants</span>
+          <div class="data-bar-wrap"><div class="data-bar" data-w="65"></div></div>
+        </div>
+        <div class="data-row">
+          <span class="data-pct">70%</span>
+          <span class="data-label">Femmes actrices</span>
+          <div class="data-bar-wrap"><div class="data-bar or" data-w="70"></div></div>
+        </div>
+        <div class="data-row">
+          <span class="data-pct">18%</span>
+          <span class="data-label">Taux d'incidents</span>
+          <div class="data-bar-wrap"><div class="data-bar rouge" data-w="18"></div></div>
+        </div>
+        <div class="data-row">
+          <span class="data-pct">99%</span>
+          <span class="data-label">Fiabilité Système</span>
+          <div class="data-bar-wrap"><div class="data-bar" data-w="99"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="kita-divider"></div>
+
+<!-- ══ TÉMOIGNAGES (INCIDENTS) ══ -->
+<section id="temoignages">
+  <div class="prob-header reveal" style="margin-bottom: 3rem;">
+    <span class="section-tag">La réalité du terrain</span>
+    <h2 class="section-title">Pourquoi nous avons créé Blocktine.</h2>
+    <p style="font-size:1.1rem; line-height:1.8; color:rgba(255,255,255,.5); max-width:700px;">Nous sommes allés à la rencontre de ceux qui font vivre l'économie locale au Bénin. Leurs histoires d'incidents sont le moteur de notre innovation.</p>
+  </div>
+  
+  <div class="temo-track-wrap">
+    <div class="temo-track" id="temoTrack">
+      <div class="temo-card">
+        <div class="temo-avatar">H</div>
+        <div class="temo-status"><div class="sdot rouge" style="background:var(--rouge)"></div>Victime d'un incident</div>
+        <p class="temo-quote">"J'ai versé 180 000 francs CFA pour mon petit commerce. Le jour de mon tour, notre organisateur avait disparu. Sans Blocktine, je n'avais aucun moyen de prouver mon épargne."</p>
+        <p class="temo-fon">Un hɛn akwɛ e un xò kplé nú sun ayizɛ́n é bú. Mɛɖé kpéwú bo d'alɔ mì ǎ.</p>
+        <div class="temo-name">Maman Houéfa</div><div class="temo-loc">Commerçante — Cotonou, Bénin</div>
+      </div>
+      <div class="temo-card">
+        <div class="temo-avatar">S</div>
+        <div class="temo-status"><div class="sdot rouge" style="background:var(--rouge)"></div>Solidarité brisée</div>
+        <p class="temo-quote">"Une simple erreur sur l'ordre de passage a détruit notre groupe de 10 ans. Sans carnet numérique inviolable, la parole d'une amie contre une autre a créé le chaos."</p>
+        <p class="temo-fon">Lìlɛ́ dín ɔ, gbɛ̌ta mǐtɔn gba. Akwɛ́ ɔ́ sɔ́ nyí nǔ tàù ǎ.</p>
+        <div class="temo-name">Maman Sèdami</div><div class="temo-loc">Couturière — Porto-Novo, Bénin</div>
+      </div>
+      <div class="temo-card">
+        <div class="temo-avatar">A</div>
+        <div class="temo-status"><div class="sdot rouge" style="background:var(--rouge)"></div>Abandons impunis</div>
+        <p class="temo-quote">"Une membre a touché la cagnotte et n'est jamais revenue cotiser pour le tour des autres. Le groupe a dû absorber la perte car rien n'était gravé dans le code."</p>
+        <p class="temo-fon">Mɛɖé mɔ akwɛ́ bo hɔn. Mǐ sɔ́ kpéwú bo d'alɔ mɛ ɖě lɛ́ ǎ.</p>
+        <div class="temo-name">Maman Akouélé</div><div class="temo-loc">Cheffe de groupe — Parakou, Bénin</div>
+      </div>
+    </div>
+  </div>
+  <div class="slider-dots">
+    <button class="sdot-btn active" onclick="goSlide(0)"></button>
+    <button class="sdot-btn" onclick="goSlide(1)"></button>
+    <button class="sdot-btn" onclick="goSlide(2)"></button>
+  </div>
+</section>
+
+<div class="kita-divider"></div>
+
+<!-- ══ SOLUTION ══ -->
+<section id="solution">
+  <span class="section-tag reveal">La solution</span>
+  <h2 class="section-title reveal">Trois principes.<br>Zéro compromis.</h2>
+  <div class="fon-block reveal" style="color:var(--vert);">Tontine ɔ wɛ nyí hlɔnhlɔn mǐtɔn tɛgbɛ.</div>
+  <div class="sol-grid">
+    <div class="sol-card reveal" onclick="toggleSol(this)">
+      <div class="sol-num">01</div><div class="sol-icon" style="color:var(--or)">⬢</div>
+      <div class="sol-title">Smart Contracts</div>
+      <div class="sol-short">Le code remplace la parole. Les règles sont gravées dans la blockchain et sont inviolables.</div>
+      <button class="sol-trigger">Comment ça aide ? <span class="sol-arrow">↓</span></button>
+      <div class="sol-body">Un "contrat intelligent" est un programme informatique qui exécute automatiquement les règles de la tontine. Puisqu'il est sur la blockchain, personne — pas même l'organisateur — ne peut changer le montant ou l'ordre de passage une fois la tontine lancée.</div>
+    </div>
+    <div class="sol-card reveal" onclick="toggleSol(this)">
+      <div class="sol-num">02</div><div class="sol-icon" style="color:var(--or)">◈</div>
+      <div class="sol-title">Registre Partagé</div>
+      <div class="sol-short">Une transparence totale. Chaque membre voit tout en temps réel, sans intermédiaire.</div>
+      <button class="sol-trigger">Quel avantage ? <span class="sol-arrow">↓</span></button>
+      <div class="sol-body">La blockchain agit comme un grand livre de comptes infalsifiable. Chaque cotisation est horodatée et visible par tous les membres. Il est impossible de nier un paiement ou d'inventer une dépense imaginaire. La vérité est accessible à tous.</div>
+    </div>
+    <div class="sol-card reveal" onclick="toggleSol(this)">
+      <div class="sol-num">03</div><div class="sol-icon" style="color:var(--or)">✦</div>
+      <div class="sol-title">Libération Crypto</div>
+      <div class="sol-short">La cagnotte est libérée par le réseau, sans intervention humaine ni délai bancaire.</div>
+      <button class="sol-trigger">Pourquoi c'est sûr ? <span class="sol-arrow">↓</span></button>
+      <div class="sol-body">L'argent (Stablecoins indexés sur le FCFA) est stocké de façon décentralisée. Dès que le dernier membre a payé, le Smart Contract envoie automatiquement la somme au bénéficiaire. Aucun individu ne contrôle la caisse physique, donc aucun vol n'est possible.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRINCIPE ══ -->
+<section id="principe">
+  <div class="principe-top">
+    <div>
+      <span class="section-tag reveal">Comment ça marche</span>
+      <h2 class="section-title reveal">De la création à<br>la libération auto.</h2>
+      <div class="reveal" style="margin-bottom:1.5rem;">
+        <span style="font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;color:var(--or);padding:.5rem .875rem;border-left:3px solid var(--or);background:rgba(249,168,37,.08);border-radius:0 8px 8px 0;display:inline-block;">Tontine ɔ wɛ nyí hlɔnhlɔn mǐtɔn tɛgbɛ.</span>
+      </div>
+      <p class="reveal" style="font-size:.975rem;line-height:1.8;color:var(--text-soft);margin-bottom:0;max-width:500px;">Cinq étapes simples. Zéro intermédiaire. La blockchain fait le reste.</p>
+    </div>
+    <div class="timeline-wrapper">
+    <div class="timeline-sidebar reveal">
+      <h3>Votre groupe, vos règles</h3>
+      <p>Chaque tontine est unique. Blocktine s'adapte à votre fréquence, votre montant, votre nombre de membres. Une fois défini, tout est automatique.</p>
+      
+      <div class="data-chip">
+        <span class="chip-val impact-num" data-target="60" data-prefix="-" data-suffix="%">—</span>
+        <span class="chip-label">d'incidents après digitalisation</span>
+      </div>
+      <div class="data-chip">
+        <span class="chip-val impact-num" data-target="35" data-prefix="+" data-suffix="%">—</span>
+        <span class="chip-label">d'épargne moyenne par membre</span>
+      </div>
+      <div class="data-chip">
+        <span class="chip-val impact-num" data-target="70" data-prefix="" data-suffix="%">—</span>
+        <span class="chip-label">de femmes protégées</span>
+      </div>
+      <div class="data-chip">
+        <span class="chip-val impact-num" data-target="400" data-prefix="" data-suffix="M+">—</span>
+        <span class="chip-label">USD sécurisés annuellement</span>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-step reveal">
+        <div class="step-dot"></div>
+        <div class="step-num">Étape 01</div>
+        <div class="step-title">Configuration du groupe</div>
+        <p class="step-body">Les membres s'accordent sur le montant de la cotisation, la fréquence et l'ordre de passage. Ces règles sont transmises à l'application pour créer votre contrat numérique.</p>
+        <span class="step-badge">Paramétrage en 2 minutes</span>
+      </div>
+
+      <div class="timeline-step reveal">
+        <div class="step-dot"></div>
+        <div class="step-num">Étape 02</div>
+        <div class="step-title">Déploiement du Smart Contract</div>
+        <p class="step-body">Un contrat numérique unique est créé sur la blockchain. Vos règles (montants, bénéficiaires) y sont gravées pour toujours. Personne ne peut les modifier, même pas nous.</p>
+        <span class="step-badge">Inscrit sur la Blockchain</span>
+      </div>
+
+      <div class="timeline-step reveal">
+        <div class="step-dot"></div>
+        <div class="step-num">Étape 03</div>
+        <div class="step-title">Cotisations Sécurisées</div>
+        <p class="step-body">Chaque membre envoie sa part vers le contrat via Mobile Money. L'argent est bloqué par le réseau blockchain, hors de portée de tout individu. La transparence est totale.</p>
+        <span class="step-badge">Fonds verrouillés (Escrow)</span>
+      </div>
+
+      <div class="timeline-step reveal">
+        <div class="step-dot"></div>
+        <div class="step-num">Étape 04</div>
+        <div class="step-title">Paiement Automatique</div>
+        <p class="step-body">À la fin de chaque cycle, le Smart Contract libère automatiquement et instantanément la totalité de la cagnotte au bénéficiaire désigné — sans aucun intermédiaire ni délai.</p>
+        <span class="step-badge">Libération instantanée</span>
+      </div>
+
+      <div class="timeline-step reveal">
+        <div class="step-dot"></div>
+        <div class="step-num">Étape 05</div>
+        <div class="step-title">Preuve d'épargne (On-Chain)</div>
+        <p class="step-body">Votre historique de paiement devient une preuve infalsifiable sur la blockchain. Vous pouvez l'utiliser pour prouver votre fiabilité financière et accéder à des crédits bancaires.</p>
+        <span class="step-badge">Score de fiabilité crédit</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="kita-divider"></div>
+
+<!-- ══ SIMULATION ══ -->
+<section id="simulation">
+  <span class="section-tag reveal" style="text-align:center;display:block;">Simulation interactive</span>
+  <h2 class="section-title reveal">Calculez votre épargne avec Blocktine.</h2>
+  
+  <div class="sim-grid reveal">
+    <div class="sim-panel">
+      <div class="sim-field">
+        <div class="sim-label"><span>Cotisation par membre</span><span id="montant-val">25 000 FCFA</span></div>
+        <input type="range" id="montant" min="5000" max="250000" step="5000" value="25000" oninput="updateSim()">
+      </div>
+      <div class="sim-field">
+        <div class="sim-label"><span>Nombre de membres</span><span id="membres-val">10 membres</span></div>
+        <input type="range" id="membres" min="3" max="30" step="1" value="10" oninput="updateSim()">
+      </div>
+      <div class="sim-field">
+        <div class="sim-label"><span>Fréquence des tours</span></div>
+        <select id="frequence" onchange="updateSim()">
+          <option value="4">Hebdomadaire (4 cycles/mois)</option>
+          <option value="1" selected>Mensuelle (1 cycle/mois)</option>
+          <option value="0.33">Trimestrielle (1 cycle / 3 mois)</option>
+        </select>
+      </div>
+      <div class="sim-field">
+        <div class="sim-label"><span>Votre position de réception</span><span id="position-val">5ème</span></div>
+        <input type="range" id="position" min="1" max="10" step="1" value="5" oninput="updateSim()">
+      </div>
+    </div>
+
+    <div class="sim-results">
+      <div class="res-card gold">
+        <div class="res-lbl">Cagnotte totale à recevoir</div>
+        <div class="res-val accent" id="res-cagnotte">250 000 FCFA</div>
+        <div class="res-sub" id="res-quand">Libérée au 5ème cycle</div>
+      </div>
+      <div class="res-card">
+        <div class="res-lbl">Total cotisé à ce stade</div>
+        <div class="res-val" id="res-cotise">125 000 FCFA</div>
+        <div class="res-sub" id="res-cycles-cotise">Après 5 cotisations</div>
+      </div>
+      <div class="res-card">
+        <div class="res-lbl">Avance sur épargne</div>
+        <div class="res-val vert" id="res-avance">+ 125 000 FCFA</div>
+        <div class="res-sub">Accès immédiat sans intérêt bancaire</div>
+      </div>
+    </div>
+  </div>
+  <div class="sim-cta-wrap reveal">
+    <button class="btn-primary" onclick="startBlockchainSim()">Démarrer ma tontine sur la blockchain →</button>
+  </div>
+
+  <div id="sim-console-wrap" class="reveal" style="max-width:800px; margin:0 auto;">
+    <div id="sim-console" class="sim-console">
+      <div class="console-header">
+        <div class="console-dot" style="background:#ff5f56"></div>
+        <div class="console-dot" style="background:#ffbd2e"></div>
+        <div class="console-dot" style="background:#27c93f"></div>
+        <span style="margin-left:auto; font-size:0.7rem; color:rgba(102,187,106,0.4); text-transform:uppercase; letter-spacing:1px;">Blocktine-Terminal v1.0.4</span>
+      </div>
+      <div id="console-output"></div>
+    </div>
+  </div>
+</section>
+
+
+
+<div class="kita-divider"></div>
+
+<!-- ══ CTA ══ -->
+<section id="cta">
+  <div class="cta-inner">
+    <span class="cta-fon-big">Mi byɔ gbɛ̌ta ɔ mɛ. Mi cɔ́ tontine mitɔn.</span>
+    <div class="cta-divider"><div class="cta-line"></div><span style="color:var(--or);font-size:.65rem;">◆</span><div class="cta-line"></div></div>
+    <h2 class="section-title">Rejoins le mouvement.<br>Protège ta tontine.</h2>
+    <p class="cta-desc">Blocktine est développé dans le cadre du MIABE Hackathon 2026 pour sécuriser l'épargne collective béninoise grâce à la blockchain.</p>
+    <div class="cta-actions">
+      <a href="#simulation" class="btn-primary">Voir une petite simulation →</a>
+      <a href="#principe" class="btn-secondary">Comment ça marche</a>
+    </div>
+    <div style="margin-top:3rem;font-size:.7rem;color:rgba(255,255,255,.2);">Projet B-01 · MIABE Hackathon 2026 · Darollo Technologies Corporation · 🇧🇯</div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-brand">Tontine<span>Chain</span> Bénin</div>
+  <div>🇧🇯 Fait avec fierté pour le Bénin · MIABE Hackathon 2026</div>
+  <div class="foot-links">
+    <a href="#probleme">Problème</a>
+    <a href="#solution">Solution</a>
+    <a href="#simulation">Simulation</a>
+  </div>
+</footer>
+
+<script>
+// ══ SCROLL REVEAL ══
+const ro = new IntersectionObserver((es)=>{
+  es.forEach((e,i)=>{if(e.isIntersecting) setTimeout(()=>e.target.classList.add('visible'),i*70);});
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+// ══ RADIAL SVG ANIMATION ══
+const svg = document.getElementById('animSVG');
+const CX=250, CY=250;
+// Suppression des images Unsplash pour des nœuds abstraits
+const N = 8; // On augmente un peu le nombre de nœuds pour l'aspect réseau
+const nodeColors = ['var(--or)', 'var(--or-vif)', 'var(--vert-vif)'];
+let phase = 1;
+let nodes = [];
+let raf;
+
+function getPos(angle, r){
+  return {
+    x: CX + r * Math.cos(angle),
+    y: CY + r * Math.sin(angle)
+  };
+}
+
+function buildNodes(){
+  svg.innerHTML = '';
+  nodes = [];
+  for(let i=0;i<N;i++){
+    const angle = (i/N)*Math.PI*2 - Math.PI/2;
+
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('stroke','rgba(249,168,37,0.15)');
+    line.setAttribute('stroke-width','1');
+    line.setAttribute('x1', CX); line.setAttribute('y1', CY);
+    svg.appendChild(line);
+
+    const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.setAttribute('class', 'tech-node');
+    
+    // Abstract hexagonal node
+    const poly = document.createElementNS('http://www.w3.org/2000/svg','path');
+    const r = 18;
+    let d = "";
+    for(let j=0; j<6; j++) {
+      const a = (j/6)*Math.PI*2;
+      d += (j===0?"M":"L") + (r*Math.cos(a)) + "," + (r*Math.sin(a));
+    }
+    d += "Z";
+    
+    poly.setAttribute('d', d);
+    poly.setAttribute('fill', 'rgba(8, 12, 8, 0.9)');
+    poly.setAttribute('stroke', nodeColors[i % nodeColors.length]);
+    poly.setAttribute('stroke-width', '2');
+    g.appendChild(poly);
+
+    // Inner glow dot
+    const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    dot.setAttribute('r', '4');
+    dot.setAttribute('fill', nodeColors[i % nodeColors.length]);
+    g.appendChild(dot);
+
+    svg.appendChild(g);
+    nodes.push({g, line, angle, curR:200, targetR:200});
+  }
+}
+
+function updateNodes(){
+  nodes.forEach((n,i)=>{
+    const pos = getPos(n.angle, n.curR);
+    n.g.setAttribute('transform',`translate(${pos.x},${pos.y})`);
+    n.line.setAttribute('x2', pos.x);
+    n.line.setAttribute('y2', pos.y);
+  });
+}
+
+let animStart = null;
+let phase1Duration = 4000;   // orbit time before converge
+let convergeDuration = 2000; // time to converge
+let holdDuration = 3000;     // hold hands logo
+let resetDuration = 800;
+
+function animLoop(ts){
+  if(!animStart) animStart = ts;
+  const elapsed = ts - animStart;
+
+  if(phase===1){
+    // Slow orbit
+    nodes.forEach((n,i)=>{
+      n.angle += 0.004;
+      n.curR = 200;
+    });
+    updateNodes();
+    if(elapsed > phase1Duration){
+      phase = 2;
+      animStart = ts;
+    }
+  } else if(phase===2){
+    // Converge inward
+    const t = Math.min(elapsed/convergeDuration, 1);
+    const ease = t<.5 ? 2*t*t : -1+(4-2*t)*t;
+    nodes.forEach((n,i)=>{
+      n.curR = 200*(1-ease) + 0*ease;
+    });
+    updateNodes();
+    if(elapsed > convergeDuration){
+      phase = 3;
+      animStart = ts;
+      // Show glow + hands
+      document.getElementById('glowBurst').classList.add('show');
+      setTimeout(()=>{
+        document.getElementById('handsLogo').classList.add('show');
+        svg.style.opacity='0';
+      },300);
+    }
+  } else if(phase===3){
+    // Hold
+    if(elapsed > holdDuration){
+      phase = 4;
+      animStart = ts;
+      document.getElementById('handsLogo').classList.remove('show');
+      document.getElementById('glowBurst').classList.remove('show');
+      setTimeout(()=>{ svg.style.opacity='1'; },400);
+    }
+  } else if(phase===4){
+    // Reset expand
+    const t = Math.min(elapsed/resetDuration, 1);
+    const ease = t<.5 ? 2*t*t : -1+(4-2*t)*t;
+    nodes.forEach((n,i)=>{
+      n.curR = 0 + 200*ease;
+    });
+    updateNodes();
+    if(elapsed > resetDuration){
+      phase = 1;
+      animStart = ts;
+    }
+  }
+  raf = requestAnimationFrame(animLoop);
+}
+
+buildNodes();
+updateNodes();
+raf = requestAnimationFrame(animLoop);
+
+// ══ COUNTERS ══
+function animCount(el, target, prefix, suffix, dur=1800){
+  let start;
+  const step = ts => {
+    if(!start) start=ts;
+    const p = Math.min((ts-start)/dur,1);
+    const v = Math.floor(p*target);
+    el.textContent = prefix+v+suffix;
+    if(p<1) requestAnimationFrame(step);
+    else el.textContent = prefix+target+suffix;
+  };
+  requestAnimationFrame(step);
+}
+
+const heroObs = new IntersectionObserver(es=>{
+  if(es[0].isIntersecting){
+    animCount(document.getElementById('c1'),400,'','M+');
+    animCount(document.getElementById('c2'),65,'','%');
+    animCount(document.getElementById('c3'),60,'','%');
+    animCount(document.getElementById('bigStat'),400,'','M',2000);
+  }
+},{threshold:.3});
+heroObs.observe(document.getElementById('hero'));
+
+// Bars
+const barObs = new IntersectionObserver(es=>{
+  if(es[0].isIntersecting)
+    document.querySelectorAll('.data-bar[data-w]').forEach(b=>
+      setTimeout(()=>b.style.width=b.dataset.w+'%',200));
+},{threshold:.3});
+barObs.observe(document.getElementById('probleme'));
+
+// Impact shake + count
+const style=document.createElement('style');
+style.textContent=`@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}`;
+document.head.appendChild(style);
+
+const impObs = new IntersectionObserver(es=>{
+  if(es[0].isIntersecting){
+    document.querySelectorAll('.impact-num[data-target]').forEach((el,i)=>{
+      setTimeout(()=>{
+        el.style.animation='shake .4s ease';
+        setTimeout(()=>{
+          el.style.animation='';
+          const t=parseInt(el.dataset.target);
+          const pre=el.dataset.prefix;
+          const suf=el.dataset.suffix;
+          animCount(el,t,pre,suf);
+        },400);
+      },i*160);
+    });
+  }
+},{threshold:.2});
+impObs.observe(document.getElementById('principe'));
+
+// ══ COIN DROP ══
+let coinFired=false;
+const coinObs = new IntersectionObserver(es=>{
+  if(es[0].isIntersecting && !coinFired){
+    coinFired=true;
+    const coin=document.getElementById('coin');
+    coin.style.animationPlayState='running';
+    setTimeout(()=>{
+      const frags=document.getElementById('frags');
+      frags.style.display='block';
+      frags.querySelectorAll('.frag').forEach(f=>{
+        f.style.animation='none';
+        f.offsetHeight;
+        f.style.animation='fragFly .9s ease forwards';
+        f.style.background=['#F9A825','#FFB300','#1B5E20','#B71C1C','#fff'][Math.floor(Math.random()*5)];
+      });
+    },1350);
+  }
+},{threshold:.3});
+coinObs.observe(document.getElementById('probleme'));
+
+// ══ ACCORDION ══
+function toggleSol(card){
+  const was=card.classList.contains('open');
+  document.querySelectorAll('.sol-card').forEach(c=>c.classList.remove('open'));
+  if(!was) card.classList.add('open');
+}
+
+// ══ SLIDER ══
+let cur=0;
+function goSlide(n){
+  cur=n;
+  const track=document.getElementById('temoTrack');
+  if(!track) return;
+  const w=track.children[0].offsetWidth+20;
+  track.style.transform=`translateX(-${n*w}px)`;
+  document.querySelectorAll('.sdot-btn').forEach((d,i)=>d.classList.toggle('active',i===n));
+}
+setInterval(()=>goSlide((cur+1)%3),5000);
+
+// ══ SIMULATION ══
+function fmt(n){return Math.round(n).toLocaleString('fr-FR')+' FCFA';}
+function ordinal(n){return n===1?'1er':n+'ème';}
+
+function updateSim(){
+  const montant=parseInt(document.getElementById('montant').value);
+  const membres=parseInt(document.getElementById('membres').value);
+  const freq=parseFloat(document.getElementById('frequence').value);
+  const posInput=document.getElementById('position');
+  
+  posInput.max=membres;
+  let posValue=parseInt(posInput.value);
+  if(posValue>membres) { posValue=membres; posInput.value=membres; }
+
+  document.getElementById('montant-val').textContent=fmt(montant);
+  document.getElementById('membres-val').textContent=membres+' membres';
+  document.getElementById('position-val').textContent=ordinal(posValue);
+
+  const cagnotte=montant*membres;
+  const cotiseAvant=montant*posValue;
+  const avance=cagnotte-cotiseAvant;
+
+  document.getElementById('res-cagnotte').textContent=fmt(cagnotte);
+  document.getElementById('res-quand').textContent='Libérée au '+ordinal(posValue)+' cycle';
+  document.getElementById('res-cotise').textContent=fmt(cotiseAvant);
+  document.getElementById('res-cycles-cotise').textContent='Après '+posValue+' cotisation'+(posValue>1?'s':'');
+  document.getElementById('res-avance').textContent=(avance>=0?'+ ':'- ')+fmt(Math.abs(avance));
+  document.getElementById('res-avance').style.color=avance>=0?'#66BB6A':'var(--or)';
+}
+updateSim();
+
+// ══ BLOCKCHAIN CONSOLE LOGIC ══
+let isSimRunning = false;
+async function startBlockchainSim() {
+  if(isSimRunning) return;
+  isSimRunning = true;
+
+  const btn = document.querySelector('#simulation .btn-primary');
+  const consoleEl = document.getElementById('sim-console');
+  const output = document.getElementById('console-output');
+  
+  btn.style.opacity = '0.5';
+  btn.innerText = 'Déploiement en cours...';
+  consoleEl.style.display = 'block';
+  output.innerHTML = '';
+
+  const montant = document.getElementById('montant-val').textContent;
+  const membres = document.getElementById('membres-val').textContent;
+  const cagnotte = document.getElementById('res-cagnotte').textContent;
+
+  const logs = [
+    { text: "> [INIT] Initialisation du protocole Blocktine...", type: "cmd" },
+    { text: "> [AUTH] Vérification de l'identité des membres... OK", type: "" },
+    { text: "> [SC] Compilation du Smart Contract (Solidity v0.8.24)...", type: "" },
+    { text: "> [SC] Génération du hash : 0x71C...4f92", type: "cmd" },
+    { text: "> [NET] Connexion au nœud principal Bénin Blockchain...", type: "" },
+    { text: "> [NET] Déploiement en cours sur le registre partagé...", type: "cmd" },
+    { text: `> [CONF] Contrat validé : ${membres} membres enregistrés.`, type: "" },
+    { text: `> [TREASURY] Cagnotte configurée à ${cagnotte} par cycle.`, type: "success" },
+    { text: "> [SMS] Diffusion des accès Mobile Money aux participants...", type: "" },
+    { text: "> [SUCCESS] Tontine activée. Votre épargne est désormais protégée par le code.", type: "success" }
+  ];
+
+  for (let i = 0; i < logs.length; i++) {
+    await new Promise(r => setTimeout(r, 600 + Math.random() * 800));
+    const line = document.createElement('div');
+    line.className = 'console-line ' + logs[i].type;
+    line.textContent = logs[i].text;
+    output.appendChild(line);
+    setTimeout(() => line.classList.add('visible'), 50);
+    consoleEl.scrollTop = consoleEl.scrollHeight;
+  }
+
+  launchConfetti();
+  btn.style.opacity = '1';
+  btn.innerText = 'Tontine active ! ✔';
+  setTimeout(() => {
+    btn.innerText = 'Démarrer ma tontine sur la blockchain →';
+    isSimRunning = false;
+  }, 5000);
+}
+
+
+// ══ CONFETTI 🎊 ══
+function launchConfetti(){
+  const canvas=document.getElementById('confetti-canvas');
+  canvas.style.display='block';
+  const ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const colors=['#1B5E20','#F9A825','#B71C1C','#ffffff','#FFB300','#2E7D32'];
+  const particles=Array.from({length:150},()=>({
+    x:Math.random()*canvas.width,y:-20,
+    w:Math.random()*10+5,h:Math.random()*6+3,
+    color:colors[Math.floor(Math.random()*colors.length)],
+    speed:Math.random()*4+2,angle:Math.random()*360,spin:Math.random()*8-4,
+    wobble:Math.random()*3,wobbleSpeed:Math.random()*.1+.05,
+    wobbleAngle:Math.random()*Math.PI*2,alpha:1
+  }));
+  let frame=0;
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    let alive=false;
+    particles.forEach(p=>{
+      p.y+=p.speed;p.x+=Math.sin(p.wobbleAngle)*p.wobble;
+      p.wobbleAngle+=p.wobbleSpeed;p.angle+=p.spin;
+      if(p.y>canvas.height*.7) p.alpha=Math.max(0,p.alpha-.02);
+      if(p.alpha>0) alive=true;
+      ctx.save();ctx.globalAlpha=p.alpha;
+      ctx.translate(p.x,p.y);ctx.rotate(p.angle*Math.PI/180);
+      ctx.fillStyle=p.color;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+    });
+    frame++;
+    if(frame<300&&alive) requestAnimationFrame(draw);
+    else{ctx.clearRect(0,0,canvas.width,canvas.height);canvas.style.display='none';}
+  }
+  draw();
+}
+</script>
+</body>
+</html>
